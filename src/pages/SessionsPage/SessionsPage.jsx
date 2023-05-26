@@ -1,42 +1,37 @@
 import styled from "styled-components"
 
-export default function SessionsPage() {
-
+export default function SessionsPage(props) {
+    // aqui precisa ter algo que indetifique o filme clicado, acredito que a forma melhor, é com usestate, para pegar a props que foi clicada
+    //
     return (
         <PageContainer>
             Selecione o horário
-            <div>
-                <SessionContainer>
-                    Sexta - 03/03/2023
-                    <ButtonsContainer>
-                        <button>14:00</button>
-                        <button>15:00</button>
-                    </ButtonsContainer>
-                </SessionContainer>
+            <EscolhaHorario>
 
-                <SessionContainer>
-                    Sexta - 03/03/2023
-                    <ButtonsContainer>
-                        <button>14:00</button>
-                        <button>15:00</button>
-                    </ButtonsContainer>
-                </SessionContainer>
+                {props.session.days.map(day => {
+                    return (
+                        <SessionContainer key ={day.id}>
+                            {day.weekday.slice(0, day.weekday.indexOf('-'))} - {day.date}
+                            <ButtonsContainer>
+                                {day.showtimes.map(time => {
+                                    return (
+                                        <button key={time.id}>
+                                            {time.name}
+                                        </button>)
+                                })}
+                            </ButtonsContainer>
+                        </SessionContainer>
+                    )
+                })}
 
-                <SessionContainer>
-                    Sexta - 03/03/2023
-                    <ButtonsContainer>
-                        <button>14:00</button>
-                        <button>15:00</button>
-                    </ButtonsContainer>
-                </SessionContainer>
-            </div>
+            </EscolhaHorario> 
 
             <FooterContainer>
                 <div>
-                    <img src={"https://br.web.img2.acsta.net/pictures/22/05/16/17/59/5165498.jpg"} alt="poster" />
+                    <img src={props.session.posterURL} alt="poster" />
                 </div>
                 <div>
-                    <p>Tudo em todo lugar ao mesmo tempo</p>
+                    <p>{props.session.title}</p>
                 </div>
             </FooterContainer>
 
@@ -54,9 +49,9 @@ const PageContainer = styled.div`
     margin-top: 30px;
     padding-bottom: 120px;
     padding-top: 70px;
-    div {
-        margin-top: 20px;
-    }
+`
+const EscolhaHorario = styled.div`
+    margin-top:40px;
 `
 const SessionContainer = styled.div`
     display: flex;
@@ -69,10 +64,12 @@ const SessionContainer = styled.div`
 `
 const ButtonsContainer = styled.div`
     display: flex;
+    flex-wrap:wrap;
     flex-direction: row;
     margin: 20px 0;
     button {
         margin-right: 20px;
+        margin-bottom:11px;
     }
     a {
         text-decoration: none;

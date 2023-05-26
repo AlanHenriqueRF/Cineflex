@@ -1,17 +1,16 @@
 import styled from "styled-components"
 
-export default function SeatsPage() {
-
+export default function SeatsPage(props) {
     return (
         <PageContainer>
             Selecione o(s) assento(s)
 
             <SeatsContainer>
-                <SeatItem>01</SeatItem>
-                <SeatItem>02</SeatItem>
-                <SeatItem>03</SeatItem>
-                <SeatItem>04</SeatItem>
-                <SeatItem>05</SeatItem>
+                {props.seats.seats.map(seat=>{
+                    return (
+                        <SeatItem key={seat.id}>{seat.name}</SeatItem>
+                    )
+                })}
             </SeatsContainer>
 
             <CaptionContainer>
@@ -41,11 +40,11 @@ export default function SeatsPage() {
 
             <FooterContainer>
                 <div>
-                    <img src={"https://br.web.img2.acsta.net/pictures/22/05/16/17/59/5165498.jpg"} alt="poster" />
+                    <img src={props.seats.movie.posterURL} alt="poster" />
                 </div>
                 <div>
-                    <p>Tudo em todo lugar ao mesmo tempo</p>
-                    <p>Sexta - 14h00</p>
+                    <p>{props.seats.movie.title}</p>
+                    <p>{props.seats.day.weekday.slice(0,props.seats.day.weekday.indexOf('-'))} - {props.seats.name}</p>
                 </div>
             </FooterContainer>
 
@@ -74,26 +73,19 @@ const SeatsContainer = styled.div`
     justify-content: center;
     margin-top: 20px;
 `
-const FormContainer = styled.div`
-    width: calc(100vw - 40px); 
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    margin: 20px 0;
-    font-size: 18px;
-    button {
-        align-self: center;
-    }
-    input {
-        width: calc(100vw - 60px);
-    }
-`
+
 const CaptionContainer = styled.div`
     display: flex;
     flex-direction: row;
     width: 300px;
     justify-content: space-between;
     margin: 20px;
+`
+const CaptionItem = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 12px;
 `
 const CaptionCircle = styled.div`
     border: 1px solid blue;         // Essa cor deve mudar
@@ -105,12 +97,6 @@ const CaptionCircle = styled.div`
     align-items: center;
     justify-content: center;
     margin: 5px 3px;
-`
-const CaptionItem = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    font-size: 12px;
 `
 const SeatItem = styled.div`
     border: 1px solid blue;         // Essa cor deve mudar
@@ -124,6 +110,20 @@ const SeatItem = styled.div`
     align-items: center;
     justify-content: center;
     margin: 5px 3px;
+`
+const FormContainer = styled.div`
+    width: calc(100vw - 40px); 
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin: 20px 0;
+    font-size: 18px;
+    button {
+        align-self: center;
+    }
+    input {
+        width: calc(100vw - 60px);
+    }
 `
 const FooterContainer = styled.div`
     width: 100%;

@@ -64,8 +64,14 @@ const TextContainer = styled.div`
     flex-direction: column;
     align-items: flex-start;
     margin-top: 30px;
+    line-height:26px;
+    font-size:22px;
     strong {
         font-weight: bold;
         margin-bottom: 10px;
     }
+    p:first-child{
+        font-size:24px;
+    }
+
 `

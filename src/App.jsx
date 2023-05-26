@@ -3,15 +3,18 @@ import HomePage from "./pages/HomePage/HomePage"
 import SeatsPage from "./pages/SeatsPage/SeatsPage"
 import SessionsPage from "./pages/SessionsPage/SessionsPage"
 import SuccessPage from "./pages/SuccessPage/SuccessPage"
+import lista_filmes from "./ListFilmes"
+import sessionList from "./SessionsList"
+import seats_list from "./Seatslist"
 
 export default function App() {
     return (
         <>
            <NavContainer>CINEFLEX</NavContainer>
 
-            <HomePage />
-            {/* <SeatsPage /> */}
-            {/* <SessionsPage /> */}
+            {/* <HomePage filmes={lista_filmes} /> */}
+            <SeatsPage  seats={seats_list}  />
+            {/* <SessionsPage  session={sessionList}/> */}
             {/* <SuccessPage /> */}
         </>
     )
