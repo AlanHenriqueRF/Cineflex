@@ -1,11 +1,16 @@
+import { Link, useParams } from "react-router-dom"
 import styled from "styled-components"
 
-export default function EachMovie({ link }) {
+export default function EachMovie({ link ,numero}) {
     // console.log(props)
+    
     return (
-        <MovieContainer>
-            <img src={link} alt="poster" />
-        </MovieContainer>
+        <Link to={`/sessoes/${numero}`}>
+            <MovieContainer>
+                <img src={link} alt="poster" />
+            </MovieContainer>
+        </Link>
+        
     )
 
 }

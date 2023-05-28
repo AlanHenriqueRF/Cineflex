@@ -8,7 +8,7 @@ export default function HomePage(props) {
             Selecione o filme
 
             <ListContainer>
-                {(props.filmes).map((movie) => <EachMovie key={movie.id} link={movie.posterURL} />)} 
+                {(props.filmes).map((movie) => <EachMovie key={movie.id} link={movie.posterURL} numero = {movie.id}/>)} 
                 {/* Renderizando cada filme, pois acredito que cada filme tem um com comportamento*/ }
             </ListContainer>
 

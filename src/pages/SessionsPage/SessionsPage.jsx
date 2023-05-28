@@ -1,37 +1,64 @@
+import { Link, useParams } from "react-router-dom"
 import styled from "styled-components"
+import { useEffect, useState } from "react"
+import axios from "axios";
 
-export default function SessionsPage(props) {
+export default function SessionsPage() {
     // aqui precisa ter algo que indetifique o filme clicado, acredito que a forma melhor, é com usestate, para pegar a props que foi clicada
     //
+    const parametro = useParams();
+    // console.log(parametro)
+
+    const [lista_sessoes, setListasessoes] = useState(null)
+
+
+    useEffect(()=>{
+    const url = `https://mock-api.driven.com.br/api/v8/cineflex/movies/${parametro.idFilme}/showtimes`
+
+    const promise = axios.get(url);
+
+    promise.then((resposta) => {
+        // console.log(resposta.data)
+        setListasessoes(resposta.data)
+    })
+
+    promise.catch((error) => {
+        console.log(error.response)
+    })},[])
+    if (lista_sessoes===null){
+        return <h1>Carregando...</h1>
+    }
     return (
         <PageContainer>
             Selecione o horário
             <EscolhaHorario>
 
-                {props.session.days.map(day => {
+                {lista_sessoes.days.map(day => {
                     return (
-                        <SessionContainer key ={day.id}>
+                        <SessionContainer key={day.id}>
                             {day.weekday.slice(0, day.weekday.indexOf('-'))} - {day.date}
-                            <ButtonsContainer>
-                                {day.showtimes.map(time => {
-                                    return (
-                                        <button key={time.id}>
-                                            {time.name}
-                                        </button>)
-                                })}
-                            </ButtonsContainer>
+                            <Link to="/assentos/1">
+                                <ButtonsContainer>
+                                    {day.showtimes.map(time => {
+                                        return (
+                                            <button key={time.id}>
+                                                {time.name}
+                                            </button>)
+                                    })}
+                                </ButtonsContainer>
+                            </Link>
                         </SessionContainer>
                     )
                 })}
 
-            </EscolhaHorario> 
+            </EscolhaHorario>
 
             <FooterContainer>
                 <div>
-                    <img src={props.session.posterURL} alt="poster" />
+                    <img src={lista_sessoes.posterURL} alt="poster" />
                 </div>
                 <div>
-                    <p>{props.session.title}</p>
+                    <p>{lista_sessoes.title}</p>
                 </div>
             </FooterContainer>
 
