@@ -6,7 +6,7 @@ export default function EachMovie({ link ,numero}) {
     
     return (
         <Link to={`/sessoes/${numero}`}>
-            <MovieContainer>
+            <MovieContainer data-test="movie">
                 <img src={link} alt="poster" />
             </MovieContainer>
         </Link>

@@ -31,7 +31,7 @@ export default function Eachseat(props) {
         }
     }
     return (
-        <SeatItem color={cor} border={bord} onClick={()=>seleciona(props.seat.isAvailable)}>
+        <SeatItem  data-test="seat" color={cor} border={bord} onClick={()=>seleciona(props.seat.isAvailable)}>
             {props.seat.name}
         </SeatItem>
     )

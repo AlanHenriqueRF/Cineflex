@@ -36,13 +36,13 @@ export default function SessionsPage() {
 
                 {lista_sessoes.days.map(day => {
                     return (
-                        <SessionContainer key={day.id}>
+                        <SessionContainer data-test="movie-day" key={day.id}>
                             {day.weekday.slice(0, day.weekday.indexOf('-')!==-1 ? day.weekday.indexOf('-'):day.weekday.length)} - {day.date}
                             <ButtonsContainer>
                                 {day.showtimes.map(time => {
                                     return (
                                         <Link to={`/assentos/${time.id}`} key={time.id}>
-                                            <button >
+                                            <button data-test="showtime" >
                                                 {time.name}
                                             </button>
                                         </Link>)
@@ -55,7 +55,7 @@ export default function SessionsPage() {
 
             </EscolhaHorario>
 
-            <FooterContainer>
+            <FooterContainer data-test="footer">
                 <div>
                     <img src={lista_sessoes.posterURL} alt="poster" />
                 </div>

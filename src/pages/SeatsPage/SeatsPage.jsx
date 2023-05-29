@@ -53,8 +53,6 @@ export default function SeatsPage() {
                 })
             })
             promise.catch(erro => { alert('estamos com problemas no servidor') })
-
-
         }
     }
 
@@ -90,7 +88,7 @@ export default function SeatsPage() {
 
             <FormContainer onSubmit={addcompra}>
                 <label htmlFor="name">Nome do Comprador:</label>
-                <input
+                <input data-test="client-name"
                     type="text"
                     id='name'
                     // name="name" 
@@ -101,6 +99,7 @@ export default function SeatsPage() {
 
                 <label htmlFor="cpf">CPF do Comprador:</label>
                 <input type="number"
+                    data-test="client-cpf"
                     id='cpf'
                     // name="cpf" 
                     placeholder="Digite seu CPF..."
@@ -108,10 +107,10 @@ export default function SeatsPage() {
                     onChange={(e) => setCpf(e.target.value)}
                     required />
 
-                <button type='submit' >Reservar Assento(s)</button>
+                <button data-test="book-seat-btn" type='submit' >Reservar Assento(s)</button>
             </FormContainer>
 
-            <FooterContainer>
+            <FooterContainer data-test="footer">
                 <div>
                     <img src={acentos.movie.posterURL} alt="poster" />
                 </div>

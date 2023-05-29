@@ -9,13 +9,13 @@ export default function SuccessPage() {
         <PageContainer>
             <h1>Pedido feito <br /> com sucesso!</h1>
 
-            <TextContainer>
+            <TextContainer data-test="movie-info">
                 <strong><p>Filme e sessão</p></strong>
                 <p>{serchparams.get('title')}</p>
                 <p>{serchparams.get('data')} - {serchparams.get('hora')}</p>
             </TextContainer>
 
-            <TextContainer>
+            <TextContainer data-test="seats-info">
                 <strong><p>Ingressos</p></strong>
                 {serchparams.getAll('selecionados').sort((a, b) => a - b).map((item) => {
                     return (<p key={item}>Assento {item}</p>)
@@ -23,13 +23,13 @@ export default function SuccessPage() {
 
             </TextContainer>
 
-            <TextContainer>
+            <TextContainer data-test="client-info">
                 <strong><p>Comprador</p></strong>
                 <p>Nome: {serchparams.get('name')}</p>
                 <p>CPF: {serchparams.get('cpf').slice(0, 3) + '.' + serchparams.get('cpf').slice(3, 6) + '.' + serchparams.get('cpf').slice(6, 9) + '-' + serchparams.get('cpf').slice(9)}</p>
             </TextContainer>
             <Link to={'/'}>
-                <button>Voltar para Home</button></Link>
+                <button data-test="go-home-btn">Voltar para Home</button></Link>
         </PageContainer>
     )
 }
