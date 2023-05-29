@@ -3,7 +3,6 @@ import HomePage from "./pages/HomePage/HomePage"
 import SeatsPage from "./pages/SeatsPage/SeatsPage"
 import SessionsPage from "./pages/SessionsPage/SessionsPage"
 import SuccessPage from "./pages/SuccessPage/SuccessPage"
-import sessionList from "./SessionsList"
 import seats_list from "./Seatslist"
 import axios from 'axios'
 import { useEffect, useState } from "react"
@@ -20,7 +19,6 @@ export default function App() {
         const promise = axios.get(url);
 
         promise.then((resposta) => {
-            console.log(resposta.data)
             setListafilme(resposta.data)
         })
 
@@ -38,8 +36,8 @@ export default function App() {
             </NavContainer>
             <Routes>
                 <Route path="/" element={<HomePage filmes={lista_filmes} />} />
-                <Route path="/sessoes/:idFilme" element={<SessionsPage session={sessionList} />} />
-                <Route path="/assentos/1" element={<SeatsPage seats={seats_list} />} />
+                <Route path="/sessoes/:idFilme" element={<SessionsPage/>} />
+                <Route path="/assentos/:idSessao" element={<SeatsPage />} />
 
             </Routes>
         </BrowserRouter>

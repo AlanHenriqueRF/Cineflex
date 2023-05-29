@@ -12,20 +12,21 @@ export default function SessionsPage() {
     const [lista_sessoes, setListasessoes] = useState(null)
 
 
-    useEffect(()=>{
-    const url = `https://mock-api.driven.com.br/api/v8/cineflex/movies/${parametro.idFilme}/showtimes`
+    useEffect(() => {
+        const url = `https://mock-api.driven.com.br/api/v8/cineflex/movies/${parametro.idFilme}/showtimes`
 
-    const promise = axios.get(url);
+        const promise = axios.get(url);
 
-    promise.then((resposta) => {
-        // console.log(resposta.data)
-        setListasessoes(resposta.data)
-    })
+        promise.then((resposta) => {
+            // console.log(resposta.data)
+            setListasessoes(resposta.data)
+        })
 
-    promise.catch((error) => {
-        console.log(error.response)
-    })},[])
-    if (lista_sessoes===null){
+        promise.catch((error) => {
+            console.log(error.response)
+        })
+    }, [])
+    if (lista_sessoes === null) {
         return <h1>Carregando...</h1>
     }
     return (
@@ -36,17 +37,18 @@ export default function SessionsPage() {
                 {lista_sessoes.days.map(day => {
                     return (
                         <SessionContainer key={day.id}>
-                            {day.weekday.slice(0, day.weekday.indexOf('-'))} - {day.date}
-                            <Link to="/assentos/1">
-                                <ButtonsContainer>
-                                    {day.showtimes.map(time => {
-                                        return (
-                                            <button key={time.id}>
+                            {day.weekday.slice(0, day.weekday.indexOf('-')!==-1 ? day.weekday.indexOf('-'):day.weekday.length)} - {day.date}
+                            <ButtonsContainer>
+                                {day.showtimes.map(time => {
+                                    return (
+                                        <Link to={`/assentos/${time.id}`} key={time.id}>
+                                            <button >
                                                 {time.name}
-                                            </button>)
-                                    })}
-                                </ButtonsContainer>
-                            </Link>
+                                            </button>
+                                        </Link>)
+                                })}
+                            </ButtonsContainer>
+
                         </SessionContainer>
                     )
                 })}
