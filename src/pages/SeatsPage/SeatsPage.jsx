@@ -1,12 +1,20 @@
-import { Link, useParams } from "react-router-dom"
+import { Link, createSearchParams, useNavigate, useParams } from "react-router-dom"
 import styled from "styled-components"
 import { useEffect, useState } from "react"
 import axios from "axios";
+import Eachseat from "./Eachseat";
+
 
 export default function SeatsPage() {
     const parametro = useParams();
     const [acentos, setacetos] = useState(null)
 
+    const [name, setName] = useState('')
+    const [cpf, setCpf] = useState('')
+    const [ids, setIds] = useState([])
+
+    const [selecionados, setSelecionados] = useState([])
+    const navigate = useNavigate()
 
     useEffect(() => {
         const url = `https://mock-api.driven.com.br/api/v8/cineflex/showtimes/${parametro.idSessao}/seats`
@@ -14,7 +22,7 @@ export default function SeatsPage() {
         const promise = axios.get(url);
 
         promise.then((resposta) => {
-            // console.log(resposta.data)
+
             setacetos(resposta.data)
         })
 
@@ -22,6 +30,34 @@ export default function SeatsPage() {
             console.log(error.response)
         })
     }, [])
+
+
+    function addcompra(e) {
+        e.preventDefault();
+        if (ids.length === 0) {
+            alert('Escolha pelo menos um banco!')
+        }
+        else if (cpf.length != 11) {
+            alert('No campo cpf, so é permitido números, e 11 digitos')
+        }
+        else {
+            const novacompra = { ids: ids, name: name, cpf: cpf }
+
+            const promise = axios.post('https://mock-api.driven.com.br/api/v8/cineflex/seats/book-many', novacompra)
+            promise.then(() => {
+                navigate({
+                    pathname: "/sucesso",
+                    search: createSearchParams(
+                        { ...novacompra, selecionados: selecionados, data: acentos.day.date, hora: acentos.name, title: acentos.movie.title }
+                    ).toString()
+                })
+            })
+            promise.catch(erro => { alert('estamos com problemas no servidor') })
+
+
+        }
+    }
+
     if (acentos === null) {
         return <h1>Carregando...</h1>
     }
@@ -30,38 +66,49 @@ export default function SeatsPage() {
             Selecione o(s) assento(s)
 
             <SeatsContainer>
-                {acentos.seats.map(seat=>{
+                {acentos.seats.map(seat => {
                     return (
-                        <SeatItem key={seat.id} color={seat.isAvailable ? '#C3CFD9':'#FBE192'} border={seat.isAvailable ? '#808F9D':'#F7C52B'}>
-                            {seat.name}
-                        </SeatItem>
+                        <Eachseat key={seat.id} seat={seat} ocupado={seat.isAvailable} name={seat.name} lista_acentos={ids} selecionados={selecionados} setSelecionados={setSelecionados} setIds={setIds} />
                     )
                 })}
             </SeatsContainer>
 
             <CaptionContainer>
                 <CaptionItem>
-                    <CaptionCircle color= {'#1AAE9E'} border={'#0E7D71'} />
+                    <CaptionCircle color={'#1AAE9E'} border={'#0E7D71'} />
                     Selecionado
                 </CaptionItem>
                 <CaptionItem>
-                    <CaptionCircle color= {'#C3CFD9'} border={'#7B8B99'}  />
+                    <CaptionCircle color={'#C3CFD9'} border={'#7B8B99'} />
                     Disponível
                 </CaptionItem>
                 <CaptionItem>
-                    <CaptionCircle color= {'#FBE192'} border={'#F7C52B'}  />
+                    <CaptionCircle color={'#FBE192'} border={'#F7C52B'} />
                     Indisponível
                 </CaptionItem>
             </CaptionContainer>
 
-            <FormContainer>
-                Nome do Comprador:
-                <input placeholder="Digite seu nome..." />
+            <FormContainer onSubmit={addcompra}>
+                <label htmlFor="name">Nome do Comprador:</label>
+                <input
+                    type="text"
+                    id='name'
+                    // name="name" 
+                    placeholder="Digite seu nome..."
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    required />
 
-                CPF do Comprador:
-                <input placeholder="Digite seu CPF..." />
+                <label htmlFor="cpf">CPF do Comprador:</label>
+                <input type="number"
+                    id='cpf'
+                    // name="cpf" 
+                    placeholder="Digite seu CPF..."
+                    value={cpf}
+                    onChange={(e) => setCpf(e.target.value)}
+                    required />
 
-                <button>Reservar Assento(s)</button>
+                <button type='submit' >Reservar Assento(s)</button>
             </FormContainer>
 
             <FooterContainer>
@@ -70,7 +117,7 @@ export default function SeatsPage() {
                 </div>
                 <div>
                     <p>{acentos.movie.title}</p>
-                    <p>{acentos.day.weekday.slice(0,acentos.day.weekday.indexOf('-'))} - {acentos.name}</p>
+                    <p>{acentos.day.weekday.slice(0, acentos.day.weekday.indexOf('-'))} - {acentos.name}</p>
                 </div>
             </FooterContainer>
 
@@ -114,8 +161,8 @@ const CaptionItem = styled.div`
     font-size: 12px;
 `
 const CaptionCircle = styled.div`
-    border: 1px solid ${props=> props.border};         // Essa cor deve mudar
-    background-color: ${props=> props.color};    // Essa cor deve mudar
+    border: 1px solid ${props => typeof (props.border) === 'object' ? props.border[0] : props.border};         // Essa cor deve mudar
+    background-color: ${props => typeof (props.color) === 'object' ? props.color[0] : props.color};    // Essa cor deve mudar
     height: 25px;
     width: 25px;
     border-radius: 25px;
@@ -124,20 +171,8 @@ const CaptionCircle = styled.div`
     justify-content: center;
     margin: 5px 3px;
 `
-const SeatItem = styled.div`
-    border: 1px solid ${props=> props.color};         // Essa cor deve mudar
-    background-color: ${props=> props.color};    // Essa cor deve mudar
-    height: 25px;
-    width: 25px;
-    border-radius: 25px;
-    font-family: 'Roboto';
-    font-size: 11px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 5px 3px;
-`
-const FormContainer = styled.div`
+
+const FormContainer = styled.form`
     width: calc(100vw - 40px); 
     display: flex;
     flex-direction: column;

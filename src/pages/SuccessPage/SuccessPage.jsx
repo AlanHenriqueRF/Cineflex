@@ -1,31 +1,35 @@
+import { useParams, useSearchParams } from "react-router-dom"
 import styled from "styled-components"
+import { Link } from "react-router-dom";
+
 
 export default function SuccessPage() {
-
+    const [serchparams] = useSearchParams()
     return (
         <PageContainer>
             <h1>Pedido feito <br /> com sucesso!</h1>
 
             <TextContainer>
                 <strong><p>Filme e sessão</p></strong>
-                <p>Tudo em todo lugar ao mesmo tempo</p>
-                <p>03/03/2023 - 14:00</p>
+                <p>{serchparams.get('title')}</p>
+                <p>{serchparams.get('data')} - {serchparams.get('hora')}</p>
             </TextContainer>
 
             <TextContainer>
                 <strong><p>Ingressos</p></strong>
-                <p>Assento 01</p>
-                <p>Assento 02</p>
-                <p>Assento 03</p>
+                {serchparams.getAll('selecionados').sort((a, b) => a - b).map((item) => {
+                    return (<p key={item}>Assento {item}</p>)
+                })}
+
             </TextContainer>
 
             <TextContainer>
                 <strong><p>Comprador</p></strong>
-                <p>Nome: Letícia Chijo</p>
-                <p>CPF: 123.456.789-10</p>
+                <p>Nome: {serchparams.get('name')}</p>
+                <p>CPF: {serchparams.get('cpf').slice(0, 3) + '.' + serchparams.get('cpf').slice(3, 6) + '.' + serchparams.get('cpf').slice(6, 9) + '-' + serchparams.get('cpf').slice(9)}</p>
             </TextContainer>
-
-            <button>Voltar para Home</button>
+            <Link to={'/'}>
+                <button>Voltar para Home</button></Link>
         </PageContainer>
     )
 }
