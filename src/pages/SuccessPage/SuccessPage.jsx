@@ -1,23 +1,23 @@
-import { useParams, useSearchParams } from "react-router-dom"
+import { useLocation } from "react-router-dom"
 import styled from "styled-components"
 import { Link } from "react-router-dom";
 
 
 export default function SuccessPage() {
-    const [serchparams] = useSearchParams()
+    const serchparams = useLocation()
     return (
         <PageContainer>
             <h1>Pedido feito <br /> com sucesso!</h1>
 
             <TextContainer data-test="movie-info">
                 <strong><p>Filme e sessão</p></strong>
-                <p>{serchparams.get('title')}</p>
-                <p>{serchparams.get('data')} - {serchparams.get('hora')}</p>
+                <p>{serchparams.state.title}</p>
+                <p>{serchparams.state.data} - {serchparams.state.hora}</p>
             </TextContainer>
 
             <TextContainer data-test="seats-info">
                 <strong><p>Ingressos</p></strong>
-                {serchparams.getAll('selecionados').sort((a, b) => a - b).map((item) => {
+                {serchparams.state.selecionados.sort((a, b) => a - b).map((item) => {
                     return (<p key={item}>Assento {item}</p>)
                 })}
 
@@ -25,8 +25,8 @@ export default function SuccessPage() {
 
             <TextContainer data-test="client-info">
                 <strong><p>Comprador</p></strong>
-                <p>Nome: {serchparams.get('name')}</p>
-                <p>CPF: {serchparams.get('cpf').slice(0, 3) + '.' + serchparams.get('cpf').slice(3, 6) + '.' + serchparams.get('cpf').slice(6, 9) + '-' + serchparams.get('cpf').slice(9)}</p>
+                <p>Nome: {serchparams.state.name}</p>
+                <p>CPF: {serchparams.state.cpf.slice(0, 3) + '.' + serchparams.state.cpf.slice(3, 6) + '.' + serchparams.state.cpf.slice(6, 9) + '-' + serchparams.state.cpf.slice(9)}</p>
             </TextContainer>
             <Link to={'/'}>
                 <button data-test="go-home-btn">Voltar para Home</button></Link>

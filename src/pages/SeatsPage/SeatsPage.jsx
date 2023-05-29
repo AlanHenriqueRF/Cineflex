@@ -45,12 +45,14 @@ export default function SeatsPage() {
 
             const promise = axios.post('https://mock-api.driven.com.br/api/v8/cineflex/seats/book-many', novacompra)
             promise.then(() => {
-                navigate({
-                    pathname: "/sucesso",
-                    search: createSearchParams(
-                        { ...novacompra, selecionados: selecionados, data: acentos.day.date, hora: acentos.name, title: acentos.movie.title }
-                    ).toString()
-                })
+                navigate("/sucesso", 
+                {state: { ...novacompra, selecionados: selecionados, data: acentos.day.date, hora: acentos.name, title: acentos.movie.title }})
+                // navigate({
+                //     pathname: ,
+                //     search: createSearchParams(
+                        
+                //     ).toString()
+                // })
             })
             promise.catch(erro => { alert('estamos com problemas no servidor') })
         }
@@ -116,7 +118,7 @@ export default function SeatsPage() {
                 </div>
                 <div>
                     <p>{acentos.movie.title}</p>
-                    <p>{acentos.day.weekday.slice(0, acentos.day.weekday.indexOf('-'))} - {acentos.name}</p>
+                    <p>{acentos.day.weekday} - {acentos.name}</p>
                 </div>
             </FooterContainer>
 
