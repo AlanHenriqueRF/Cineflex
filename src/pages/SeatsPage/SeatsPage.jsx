@@ -47,12 +47,6 @@ export default function SeatsPage() {
             promise.then(() => {
                 navigate("/sucesso", 
                 {state: { ...novacompra, selecionados: selecionados, data: acentos.day.date, hora: acentos.name, title: acentos.movie.title }})
-                // navigate({
-                //     pathname: ,
-                //     search: createSearchParams(
-                        
-                //     ).toString()
-                // })
             })
             promise.catch(erro => { alert('estamos com problemas no servidor') })
         }
